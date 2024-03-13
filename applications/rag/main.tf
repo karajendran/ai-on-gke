@@ -145,16 +145,6 @@ resource "google_project_service" "project_service" {
   disable_on_destroy         = false
 }
 
-# IAP Section: Enabled the IAP service
-resource "google_project_service" "project_service" {
-  count   = var.frontend_add_auth || var.jupyter_add_auth ? 1 : 0
-  project = var.project_id
-  service = "iap.googleapis.com"
-
-  disable_dependent_services = false
-  disable_on_destroy         = false
-}
-
 module "jupyterhub" {
   source     = "github.com/GoogleCloudPlatform/ai-on-gke//modules/jupyter?ref=marketplace"
   providers  = { helm = helm.rag, kubernetes = kubernetes.rag }
