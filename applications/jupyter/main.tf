@@ -26,7 +26,7 @@ data "google_project" "project" {
 }
 
 module "infra" {
-  source = "../../infrastructure"
+  source = "github.com/GoogleCloudPlatform/ai-on-gke//infrastructure?ref=marketplace"
   count  = var.create_cluster ? 1 : 0
 
   project_id        = var.project_id
@@ -92,7 +92,7 @@ provider "helm" {
 }
 
 module "gcs" {
-  source      = "../../modules/gcs"
+  source      = "github.com/GoogleCloudPlatform/ai-on-gke//modules/gcs?ref=marketplace"
   count       = var.create_gcs_bucket ? 1 : 0
   project_id  = var.project_id
   bucket_name = var.gcs_bucket
@@ -100,7 +100,7 @@ module "gcs" {
 
 # create namespace
 module "namespace" {
-  source           = "../../modules/kubernetes-namespace"
+  source           = "github.com/GoogleCloudPlatform/ai-on-gke//modules/kubernetes-namespace?ref=marketplace"
   providers        = { helm = helm.jupyter }
   namespace        = var.kubernetes_namespace
   create_namespace = true
@@ -118,7 +118,7 @@ resource "google_project_service" "project_service" {
 
 # Creates jupyterhub
 module "jupyterhub" {
-  source                            = "../../modules/jupyter"
+  source                            = "github.com/GoogleCloudPlatform/ai-on-gke//modules/jupyter?ref=marketplace"
   providers                         = { helm = helm.jupyter, kubernetes = kubernetes.jupyter }
   project_id                        = var.project_id
   namespace                         = var.kubernetes_namespace
